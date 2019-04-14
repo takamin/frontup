@@ -1,0 +1,42 @@
+{
+  "name": "frontup",
+  "version": "0.9.0",
+  "description": "A command to upload files to a S3 bucket and create invalidation of AWS CloudFront distribution.",
+  "main": "index.js",
+  "bin": {
+    "frontup": "bin/frontup.js"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takamin/frontup.git"
+  },
+  "keywords": [
+    "AWS",
+    "S3",
+    "CloudFront",
+    "invalidation",
+    "putObject",
+    "createInvalidation"
+  ],
+  "author": "Koji Takami <vzg03566@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/takamin/frontup/issues"
+  },
+  "homepage": "https://github.com/takamin/frontup#readme",
+  "dependencies": {
+    "aws-sdk": "^2.437.0",
+    "es6-promisify": "^6.0.1",
+    "files-async": "^1.0.1",
+    "mime-types": "^2.1.22",
+    "promise-fs": "^2.1.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {}
+}
