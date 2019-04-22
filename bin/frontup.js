@@ -49,31 +49,47 @@ const createUploadParams = async (bucket, dstRoot, srcPath) => {
         const keyBasename = path.basename(pathname.replace(/\\/g, "/"));
         const key = (!keyPathIsFolder ? keyPath : `${keyPath}/${keyBasename}`);
         const params = await createS3PutObjectParam(bucket, key, pathname);
-        return [ { pathname: pathname, params: params } ];
+        return [ { pathname, params } ];
     }
 
     const re = new RegExp(`^${srcPath}`);
     return await filesAsync(srcPath, async pathname => {
         const key = pathname.replace(/\\/g, "/").replace(re, keyPath);
         const params = await createS3PutObjectParam(bucket, key, pathname);
-        return { pathname: pathname, params: params };
+        return { pathname, params };
     });
 };
 
 const main = async () => {
     const config = await loadConfig( "./frontup.config.js");
     const cfDist = new CloudFrontDistribution(config.CloudFrontDistributionId);
-    const S3_BUCKET = config.S3BucketName;
     const paths = config.Files;
 
     const putObjectParamList = [];
-    await Promise.all(Object.keys(paths).map( async (dstRoot) => {
-        const srcPath = paths[dstRoot];
-        const params = await createUploadParams(S3_BUCKET, dstRoot, srcPath);
-        params.forEach( async item => {
-            putObjectParamList.push(item);
-        });
-    }));
+    const errors = (await Promise.all(
+        Object.keys(paths).map( async (dstRoot) => {
+            try {
+                const srcPath = paths[dstRoot];
+                const bucket = await cfDist.getOriginBucket(dstRoot);
+                const params = await createUploadParams(
+                    bucket, dstRoot, srcPath);
+                params.forEach( async item => {
+                    putObjectParamList.push(item);
+                });
+                return null;
+            } catch(err) {
+                return err;
+            }
+        })
+    )).filter( err => !!err );
+
+    if(errors.length > 0) {
+        console.error(errors.map(
+            err => `Error: ${err.message}`
+        ).join("\n"));
+        process.exit(-1);
+    }
+
     let count = 0;
     await Promise.all(putObjectParamList.map( async item => {
         console.log(`putObject: ${item.pathname}`);

@@ -26,7 +26,6 @@ __frontup.config.js__:
 ```javascript
 module.exports = {
     CloudFrontDistributionId: "<cloudfront-distribution-id>",
-    "S3BucketName": "<s3-bucket-name>",
     "Files":{
         "<distination-s3-key>": "<relative-path-name>",
         ・
@@ -39,11 +38,6 @@ module.exports = {
 __`cloudfront-distribution-id`:__
 
 The id of CloudFront distribution.
-
-__`s3-bucket-name`:__
-
-The S3 bucket name which the contents published by the ClodFront distribution
-are stored.
 
 __`distination-s3-key`:__
 
