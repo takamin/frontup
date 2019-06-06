@@ -34,7 +34,9 @@
     "aws-sdk": "^2.437.0",
     "es6-promisify": "^6.0.1",
     "files-async": "^1.0.1",
+    "hash-arg": "^0.3.3",
     "mime-types": "^2.1.22",
+    "node-getopt": "^0.3.2",
     "promise-fs": "^2.1.0",
     "uuid": "^3.3.2"
   },

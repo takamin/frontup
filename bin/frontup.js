@@ -1,5 +1,7 @@
 #! /usr/bin/env node
 "use strict";
+const Getopt = require("node-getopt");
+const hasharg = require("hash-arg");
 const AWS = require("aws-sdk");
 const path = require("path");
 const mime = require("mime-types");
@@ -9,6 +11,44 @@ const filesAsync = require("files-async");
 const CloudFrontDistribution = require("../lib/cf-dist.js");
 const Spinner = require("../lib/spinner.js");
 const s3 = new AWS.S3();
+
+const getopt = new Getopt([
+  ["v", "version",  "display version"   ],
+  ["h", "help",     "display this help" ]
+]);
+
+getopt.setHelp(
+
+`Usage: frontup [frontup_config_js] [OPTION]
+AWS S3 contents uploader distributed by AWS cloudfront distribution.
+
+PARAMETERS:
+  frontup_config_js (Optional)
+    A configuration filename.
+    Default: "./frontup.config.js"
+
+OPTIONS:
+[[OPTIONS]]
+
+A configuration file must be decalared as a CommonJs module.
+It must export an object like below.
+
+  module.exports = {
+      CloudFrontDistributionId: "<cloudfront-distribution-id>",
+      "S3BucketName": "<s3-bucket-name>",
+      "Files":{
+          "<distination-s3-key>": "<relative-path-name>",
+          ・
+          ・
+          ・
+      },
+  };
+
+Installation: npm install frontup
+Respository:  https://github.com/takamin/frontup`
+
+);
+
 const promised = {
     s3: {
         putObject: promisify(s3.putObject.bind(s3)),
@@ -61,7 +101,26 @@ const createUploadParams = async (bucket, dstRoot, srcPath) => {
 };
 
 const main = async () => {
-    const config = await loadConfig( "./frontup.config.js");
+    const command = getopt.parseSystem();
+    if(command.options.version) {
+        console.error(require("../package.json").version);
+        process.exit(1);
+    }
+    if(command.options.help) {
+        getopt.showHelp();
+        process.exit(1);
+    }
+    const argv = hasharg.get([
+        {
+            "name":"frontupConfigJs",
+            "default": "./frontup.config.js",
+        }
+    ], getopt.argv);
+    const { frontupConfigJs } = argv;
+    const config = await loadConfig( frontupConfigJs );
+    if(!config) {
+        process.exit(1);
+    }
     const cfDist = new CloudFrontDistribution(config.CloudFrontDistributionId);
     const S3_BUCKET = config.S3BucketName;
     const paths = config.Files;
