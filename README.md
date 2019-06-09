@@ -39,9 +39,9 @@ A configuration file must be decalared as a CommonJs module.
 It must export an object like below.
 
   module.exports = {
-      CloudFrontDistributionId: "<cloudfront-distribution-id>",
+      "CloudFrontDistributionId": "<cloudfront-distribution-id>",
       "S3BucketName": "<s3-bucket-name>",
-      "Files":{
+      "Files": {
           "<distination-s3-key>": "<relative-path-name>",
           ・
           ・
@@ -59,9 +59,9 @@ __frontup.config.js__:
 
 ```javascript
 module.exports = {
-    CloudFrontDistributionId: "<cloudfront-distribution-id>",
+    "CloudFrontDistributionId": "<cloudfront-distribution-id>",
     "S3BucketName": "<s3-bucket-name>",
-    "Files":{
+    "Files": {
         "<distination-s3-key>": "<relative-path-name>",
         ・
         ・
