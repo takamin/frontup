@@ -32,6 +32,7 @@ PARAMETERS:
     Default: "./frontup.config.js"
 
 OPTIONS:
+  -n, --dry-run Do not upload any files, but print the files and target keys
   -v, --version display version
   -h, --help    display this help
 
