@@ -13,6 +13,7 @@ const Spinner = require("../lib/spinner.js");
 const s3 = new AWS.S3();
 
 const getopt = new Getopt([
+  ["n", "dry-run",  "Do not upload any files, but print the files and target keys" ],
   ["v", "version",  "display version"   ],
   ["h", "help",     "display this help" ]
 ]);
@@ -110,6 +111,7 @@ const main = async () => {
         getopt.showHelp();
         process.exit(1);
     }
+    const dryRunOption = command.options["dry-run"];
     const argv = hasharg.get([
         {
             "name":"frontupConfigJs",
@@ -138,11 +140,17 @@ const main = async () => {
         console.log(`putObject: ${item.pathname}`);
         console.log(`  [ContentType: ${item.params.ContentType}]`);
         console.log(`  ==> s3:${'//'}${item.params.Bucket}/${item.params.Key}`);
+        if(dryRunOption) {
+            return;
+        }
         await promised.s3.putObject(item.params);
         count++;
     }));
     console.log(`${count} files uploaded`);
 
+    if(dryRunOption) {
+        return;
+    }
     console.error("Create a invalidation");
     const invalidation = await cfDist.createInvalidation([ "/*" ]);
     const spinner = new Spinner("Waiting the invalidation is completed ...");
