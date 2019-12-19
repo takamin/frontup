@@ -17,16 +17,51 @@ or
 
 `npm install --save-dev frontup`
 
+If the global install fails, once uninstalling might be a solution.
+
 ## USAGE
 
-Run the command `frontup` after creating a config file where current directory.
+```console
+$ frontup -h
+Usage: frontup [frontup_config_js] [OPTION]
+AWS S3 contents uploader distributed by AWS cloudfront distribution.
+
+PARAMETERS:
+  frontup_config_js (Optional)
+    A configuration filename.
+    Default: "./frontup.config.js"
+
+OPTIONS:
+  -n, --dry-run Do not upload any files, but print the files and target keys
+  -v, --version display version
+  -h, --help    display this help
+
+A configuration file must be decalared as a CommonJs module.
+It must export an object like below.
+
+  module.exports = {
+      "CloudFrontDistributionId": "<cloudfront-distribution-id>",
+      "S3BucketName": "<s3-bucket-name>",
+      "Files": {
+          "<distination-s3-key>": "<relative-path-name>",
+          ・
+          ・
+          ・
+      },
+  };
+
+Installation: npm install frontup
+Respository:  https://github.com/takamin/frontup
+```
+
+Here is a skelton of a configuration file for `frontup`.
 
 __frontup.config.js__:
 
 ```javascript
 module.exports = {
-    CloudFrontDistributionId: "<cloudfront-distribution-id>",
-    "Files":{
+    "CloudFrontDistributionId": "<cloudfront-distribution-id>",
+    "Files": {
         "<distination-s3-key>": "<relative-path-name>",
         ・
         ・
