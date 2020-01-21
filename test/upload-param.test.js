@@ -72,6 +72,30 @@ describe("lib/upload-param.js", ()=>{
         it("should be exported", () => {
             assert.instanceOf(createS3PutObjectParam, Function);
         });
+        it("should throw if the input file does not exist", async () => {
+            await createTestDir();
+            try {
+                await createS3PutObjectParam(
+                    "BucketName", "test/data", "there-is-no-file");
+                assert(false);
+            } catch( err ) {
+                assert(true);
+            } finally {
+                await removeTestDir();
+            }
+        });
+        it("should not yield a ContentType property when the MIME-type is not be determined", async () => {
+            await createTestDir();
+            try {
+                const param = await createS3PutObjectParam(
+                    "BucketName",
+                    "test/data/",
+                    "test/data/dA0/fB1.no-mime-type");
+                assert.notProperty(param, "ContentType");
+            } finally {
+                await removeTestDir();
+            }
+        });
     });
     describe(".createS3BucketKey", ()=>{
         it("should be exported", () => {
