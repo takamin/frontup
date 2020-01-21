@@ -44,6 +44,21 @@ It must export an object like below.
       "S3BucketName": "<s3-bucket-name>",
       "Files": {
           "<distination-s3-key>": "<relative-path-name>",
+          "<distination-s3-key>": [
+            "<relative-path-name>",
+                    ・
+                    ・
+                    ・
+          ],
+          "<distination-s3-key>": {
+            path: "<relative-path-name>",
+            exclude: [
+              "regular-expression-to-exclude",
+                    ・
+                    ・
+                    ・
+            ],
+          },
           ・
           ・
           ・
@@ -54,7 +69,7 @@ Installation: npm install frontup
 Respository:  https://github.com/takamin/frontup
 ```
 
-Here is a skelton of a configuration file for `frontup`.
+Here is an example of configuration file.
 
 __frontup.config.js__:
 
@@ -64,6 +79,21 @@ module.exports = {
     "S3BucketName": "<s3-bucket-name>",
     "Files": {
         "<distination-s3-key>": "<relative-path-name>",
+        "<distination-s3-key>": [
+          "<relative-path-name>",
+                  ・
+                  ・
+                  ・
+        ],
+        "<distination-s3-key>": {
+          path: "<relative-path-name>",
+          exclude: [
+            "regular-expression-to-exclude",
+                  ・
+                  ・
+                  ・
+          ],
+        },
         ・
         ・
         ・

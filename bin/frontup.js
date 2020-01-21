@@ -37,9 +37,24 @@ It must export an object like below.
       "S3BucketName": "<s3-bucket-name>",
       "Files": {
           "<distination-s3-key>": "<relative-path-name>",
-          ・
-          ・
-          ・
+            "<distination-s3-key>": [
+            "<relative-path-name>",
+                    ・
+                    ・
+                    ・
+            ],
+            "<distination-s3-key>": {
+            path: "<relative-path-name>",
+            exclude: [
+                "regular-expression-to-exclude",
+                    ・
+                    ・
+                    ・
+            ],
+            },
+            ・
+            ・
+            ・
       },
   };
 
