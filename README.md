@@ -45,23 +45,23 @@ It must export an object like below.
       "Files": {
           "<distination-s3-key>": "<relative-path-name>",
           "<distination-s3-key>": [
-            "<relative-path-name>",
-                    ・
-                    ・
-                    ・
+              "<relative-path-name>",
+                  .
+                  .
+                  .
           ],
           "<distination-s3-key>": {
-            path: "<relative-path-name>",
-            exclude: [
-              "regular-expression-to-exclude",
-                    ・
-                    ・
-                    ・
-            ],
+              "path": "<relative-path-name>",
+              "exclude": [
+                  "<regular-expression-to-exclude>",
+                      .
+                      .
+                      .
+              ],
           },
-          ・
-          ・
-          ・
+          .
+          .
+          .
       },
   };
 
@@ -80,23 +80,23 @@ module.exports = {
     "Files": {
         "<distination-s3-key>": "<relative-path-name>",
         "<distination-s3-key>": [
-          "<relative-path-name>",
-                  ・
-                  ・
-                  ・
+            "<relative-path-name>",
+                .
+                .
+                .
         ],
         "<distination-s3-key>": {
-          path: "<relative-path-name>",
-          exclude: [
-            "regular-expression-to-exclude",
-                  ・
-                  ・
-                  ・
-          ],
+            "path": "<relative-path-name>",
+            "exclude": [
+                "<regular-expression-to-exclude>",
+                    .
+                    .
+                    .
+            ],
         },
-        ・
-        ・
-        ・
+        .
+        .
+        .
     },
 };
 ```
@@ -113,7 +113,7 @@ are stored.
 __`distination-s3-key`:__
 
 The distination S3 Key.
-If this must be a folder key, you would better to add slash(`/`) to the end.
+If this must be a folder key, it should be ended with a slash(`/`).
 
 __`relative-path-name`:__
 
@@ -122,6 +122,11 @@ This must be a relative pathname from the current working directory.
 __Do not start with `./`, `../` or `/`__ for the pathname.
 
 If the pathname is directory, all the files will be uploaded.
+
+__`regular-expression-to-exclude`__
+
+To exclude specific files, Write regular expressions matching to the excluding
+file name.
 
 ## LICENSE
 
