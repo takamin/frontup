@@ -1,7 +1,7 @@
 {
   "name": "frontup",
-  "version": "0.11.0",
-  "description": "A command to upload files to a S3 bucket and create invalidation of AWS CloudFront distribution.",
+  "version": "0.12.0",
+  "description": "The S3 buckets' uploader and CloudFront distributions' invalidator",
   "main": "index.js",
   "bin": {
     "frontup": "bin/frontup.js"
