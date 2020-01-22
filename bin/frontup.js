@@ -78,6 +78,28 @@ const loadConfig = pathname => {
     }
 };
 
+const listFiles = async (paths, S3_BUCKET) => {
+    const putObjectParamList = [];
+    const appendList = async (bucket, dstRoot, srcPath) => {
+        const params = await createUploadParams(
+            bucket, dstRoot, srcPath);
+        params.forEach( item => {
+            putObjectParamList.push(item);
+        });
+    };
+    await Promise.all(Object.keys(paths).map( async (dstRoot) => {
+        const srcPath = paths[dstRoot];
+        if(Array.isArray(S3_BUCKET)) {
+            await Promise.all(S3_BUCKET.map(bucket =>
+                appendList(bucket, dstRoot, srcPath)
+            ));
+        } else {
+            await appendList(S3_BUCKET, dstRoot, srcPath);
+        }
+    }));
+    return putObjectParamList;
+};
+
 const main = async () => {
     const command = getopt.parseSystem();
     if(command.options.version) {
@@ -100,18 +122,13 @@ const main = async () => {
     if(!config) {
         process.exit(1);
     }
-    const cfDist = new CloudFrontDistribution(config.CloudFrontDistributionId);
+    const cfDist = (Array.isArray(config.CloudFrontDistributionId))?
+        config.CloudFrontDistributionId.map(id => new CloudFrontDistribution(id)) :
+        [new CloudFrontDistribution(config.CloudFrontDistributionId)];
     const S3_BUCKET = config.S3BucketName;
     const paths = config.Files;
+    const putObjectParamList = await listFiles(paths, S3_BUCKET);
 
-    const putObjectParamList = [];
-    await Promise.all(Object.keys(paths).map( async (dstRoot) => {
-        const srcPath = paths[dstRoot];
-        const params = await createUploadParams(S3_BUCKET, dstRoot, srcPath);
-        params.forEach( item => {
-            putObjectParamList.push(item);
-        });
-    }));
     let count = 0;
     await Promise.all(putObjectParamList.map( async item => {
         console.log(`putObject: ${item.pathname}`);
@@ -129,9 +146,11 @@ const main = async () => {
         return;
     }
     console.error("Create a invalidation");
-    const invalidation = await cfDist.createInvalidation([ "/*" ]);
     const spinner = new Spinner("Waiting the invalidation is completed ...");
-    await invalidation.waitTillCompleted();
+    await Promise.all(cfDist.map(async dist => {
+        const invalidation = await dist.createInvalidation([ "/*" ]);
+        await invalidation.waitTillCompleted();
+    }));
     spinner.end("done.");
     console.error("The invalidation has completed.");
 };
