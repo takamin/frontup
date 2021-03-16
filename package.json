@@ -1,6 +1,6 @@
 {
   "name": "frontup",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "The S3 buckets' uploader and CloudFront distributions' invalidator",
   "main": "index.js",
   "bin": {
@@ -33,6 +33,7 @@
   "homepage": "https://github.com/takamin/frontup#readme",
   "dependencies": {
     "aws-sdk": "^2.716.0",
+    "debug": "^4.3.1",
     "es6-promisify": "^6.1.1",
     "files-async": "^1.0.2",
     "hash-arg": "^1.0.3",

@@ -43,14 +43,14 @@ It must export an object like below.
       "CloudFrontDistributionId": "<cloudfront-distribution-id>",
       "S3BucketName": "<s3-bucket-name>",
       "Files": {
-          "<distination-s3-key>": "<relative-path-name>",
-          "<distination-s3-key>": [
+          "<destination-s3-key>": "<relative-path-name>",
+          "<destination-s3-key>": [
               "<relative-path-name>",
                   .
                   .
                   .
           ],
-          "<distination-s3-key>": {
+          "<destination-s3-key>": {
               "path": "<relative-path-name>",
               "exclude": [
                   "<regular-expression-to-exclude>",
@@ -78,14 +78,14 @@ module.exports = {
     "CloudFrontDistributionId": "<cloudfront-distribution-id>",
     "S3BucketName": "<s3-bucket-name>",
     "Files": {
-        "<distination-s3-key>": "<relative-path-name>",
-        "<distination-s3-key>": [
+        "<destination-s3-key>": "<relative-path-name>",
+        "<destination-s3-key>": [
             "<relative-path-name>",
                 .
                 .
                 .
         ],
-        "<distination-s3-key>": {
+        "<destination-s3-key>": {
             "path": "<relative-path-name>",
             "exclude": [
                 "<regular-expression-to-exclude>",
@@ -110,9 +110,9 @@ __`s3-bucket-name`:__
 The S3 bucket name which the contents published by the ClodFront distribution
 are stored.
 
-__`distination-s3-key`:__
+__`destination-s3-key`:__
 
-The distination S3 Key.
+The destination S3 Key.
 If this must be a folder key, it should be ended with a slash(`/`).
 
 __`relative-path-name`:__
