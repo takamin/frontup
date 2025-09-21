@@ -1,6 +1,6 @@
 {
   "name": "frontup",
-  "version": "0.12.5",
+  "version": "0.12.6",
   "description": "The S3 buckets' uploader and CloudFront distributions' invalidator",
   "main": "index.js",
   "bin": {
